@@ -36,19 +36,19 @@ while -1 < pos[0] < len(grid[0]) and -1 < pos[1] < len(grid) :
 visitedNoStart.remove(startPos)
 
 total = 0
-for position in visitedNoStart :
+for position in visitedNoStart : 
     grid2 = cloneGrid()
     grid2[position[1]] = grid2[position[1]][:position[0]] + "#" + grid2[position[1]][position[0]+1:]
     pos = findGuard()
     direction = (0, -1)
-    visited = []
+    visited = set()
     
     iter = 0
     while -1 < pos[0] < len(grid2[0]) and -1 < pos[1] < len(grid2) :
-        if iter > 10000 : # terrible way to do it, but it works, and runs significantly faster than breaking when same position/rotation is reached...
+        if (pos, direction) in visited :
             total += 1
             break
-        visited.append(pos)
+        visited.add((pos, direction))
         canWalk = True
         try :
             if grid2[pos[1] + direction[1]][pos[0] + direction[0]] == "#" :
