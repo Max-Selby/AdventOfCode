@@ -7,15 +7,6 @@ def findGuard() :
         for jdx, letter in enumerate(elem) :
             if letter == "^" :
                 return (jdx, idx)
-            
-def cloneGrid() :
-    clone = []
-    for i in grid :
-        c = ""
-        for j in i :
-            c += j
-        clone.append(c)
-    return clone
 
 pos = findGuard()
 startPos = findGuard()
@@ -35,23 +26,25 @@ while -1 < pos[0] < len(grid[0]) and -1 < pos[1] < len(grid) :
         pos = (pos[0] + direction[0], pos[1] + direction[1])
 visitedNoStart.remove(startPos)
 
+positionStart = findGuard()
+
 total = 0
 for position in visitedNoStart : 
-    grid2 = cloneGrid()
-    grid2[position[1]] = grid2[position[1]][:position[0]] + "#" + grid2[position[1]][position[0]+1:]
-    pos = findGuard()
+    obstacle = (position[1], position[0])
+
+    pos = positionStart
     direction = (0, -1)
     visited = set()
     
     iter = 0
-    while -1 < pos[0] < len(grid2[0]) and -1 < pos[1] < len(grid2) :
+    while -1 < pos[0] < len(grid[0]) and -1 < pos[1] < len(grid) :
         if (pos, direction) in visited :
             total += 1
             break
         visited.add((pos, direction))
         canWalk = True
         try :
-            if grid2[pos[1] + direction[1]][pos[0] + direction[0]] == "#" :
+            if grid[pos[1] + direction[1]][pos[0] + direction[0]] == "#" or (pos[1] + direction[1], pos[0] + direction[0]) == obstacle :
                 canWalk = False
                 direction = dirs[(dirs.index(direction) + 1) % 4]
         except :
